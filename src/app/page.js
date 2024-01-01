@@ -8,52 +8,72 @@ function MinFontCalc({ pixelMin }, { percentChg }) {
 }
 
 function FrontPageHeader({ title }) {
-  return <h1 style={{ "font-size": "calc(12px + 1.5vw)" }}>{title}</h1>;
+  return <h1 style={{ fontSize: "calc(12px + 1.5vw)" }}>{title}</h1>;
 }
 
 export default function Home() {
   const [email, setEmail] = useState("");
+  const [emailFieldState, setEmailFieldState] = useState(false);
   //const out = getStreamSomehow();
   //const err = getStreamSomehow();
   //const myConsole = new console.Console(out)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     console.error("email: %s", email);
-    // const result = await signIn('credentials', {
-    //   redirect: false,
-    //   email,
-    //   password,
-    // })
-    // if (!result.error) {
-    //   router.push('/')
-    // }
-  };
+    console.error("emailFieldState: ", emailFieldState);
+    console.error("email valid: ", isEmailInvalid);
+    setEmailFieldState(isEmailInvalid);
+  }
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.error("email: %s", email);
+  //   console.error("emailFieldState: ", emailFieldState);
+  //   console.error("email valid: ", isEmailInvalid);
+  //   setEmailFieldState(isEmailInvalid);
+  //   // const result = await signIn('credentials', {
+  //   //   redirect: false,
+  //   //   email,
+  //   //   password,
+  //   // })
+  //   // if (!result.error) {
+  //   //   router.push('/')
+  //   // }
+  // };
 
   const validateEmail = (value) =>
-    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
   const isEmailInvalid = React.useMemo(() => {
-    if (email === "") return false;
+    console.log("isEmailInvalid: ", email);
+    if (email === "") {
+      setEmailFieldState(false);
+      return true;
+    }
 
-    return validateEmail(email) ? false : true;
+    if (validateEmail(email)) {
+      setEmailFieldState(false);
+      return false;
+    } else {
+      return true;
+    }
   }, [email]);
 
   return (
     <NextUIProvider>
-      <div className="flex min-h-screen flex-col items-center justify-between">
-        <div
-          style={{ "margin-top": "5px + 1vh", "margin-bottom": "5px + 1vh" }}
-        >
+      <div className="flex min-h-screen flex-col items-center">
+        <div style={{ marginTop: "5px + 1vh", marginBottom: "5px + 1vh" }}>
           <FrontPageHeader title="Dublin Food Pantry Volunteer Sign-In" />
         </div>
 
-        <div style={{ "min-height": "200px" }}>
-          <form onSubmit={handleSubmit}>
+        <div
+          style={{ minHeight: "200px" }}
+          className="flex items-center flex-col"
+        >
+          <form className="flex items-center flex-col" onSubmit={handleSubmit}>
             <Input
-              isRequired
               isClearable
-              type="email"
               value={email}
               onValueChange={setEmail}
               onClear={() => console.log("email cleared")}
@@ -63,24 +83,28 @@ export default function Home() {
               color="default"
               size="lg"
               radius="sm"
-              isInvalid={isEmailInvalid}
-              errorMessage={isEmailInvalid && "Please enter a valid email"}
+              isInvalid={emailFieldState}
+              errorMessage={emailFieldState && "Please enter a valid email"}
               classNames={{
-                label: ["text-black/90", "text-4xl"],
+                label: ["text-white/100", "text-xl"],
               }}
             />
-            <div align="center" style={{ "margin-top": "5px" }}>
-              <Button
-                type="submit"
-                style={{
-                  "margin-bottom": "5px + 1vh",
-                  font: "Arial",
-                  "font-size": "24px",
-                }}
-              >
-                Sign in
-              </Button>
-            </div>
+            <Button
+              className="self-center"
+              type="submit"
+              style={{
+                marginBottom: "5px + 1vh",
+                font: "Arial",
+                fontSize: "24px",
+                marginTop: "5px",
+              }}
+              onPress={() => {
+                console.log("button press email: ", email);
+                isEmailInvalid;
+              }}
+            >
+              Sign in
+            </Button>
           </form>
         </div>
       </div>
