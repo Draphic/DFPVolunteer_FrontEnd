@@ -1,4 +1,5 @@
 "use client";
+import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { Button, Input, Spacer, RadioGroup, Radio } from "@nextui-org/react";
 import React, { useState } from "react";

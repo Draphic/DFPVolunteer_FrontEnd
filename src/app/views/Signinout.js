@@ -54,9 +54,23 @@ export default function Signinout() {
             mainWrapper: ["w-full"]
           }}
         />
-        <RadioGroup label="Time" defaultValue="currentTime">
-          <Radio value="currentTime">Use the current time</Radio>
-          <Radio value="customTime">Enter time myself</Radio>
+        <RadioGroup 
+            label="Time for sign-in/out" 
+            defaultValue="currentTime" 
+            classNames={{
+                label: ["text-white/100"]
+            }}
+            >
+          <Radio 
+            classNames={{
+                label: ["text-white/100"]
+            }}
+            value="currentTime">Use the current time</Radio>
+          <Radio 
+            classNames={{
+                label: ["text-white/100"]
+            }}
+            value="customTime">Enter time myself</Radio>
         </RadioGroup>
         <div className="w-96 flex flex-row">
           <Button
