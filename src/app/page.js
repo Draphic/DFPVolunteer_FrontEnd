@@ -20,6 +20,7 @@ export default function Home() {
         <div style={{ marginTop: "5px + 1vh", marginBottom: "5px + 1vh" }}>
           <FrontPageHeader title="Dublin Food Pantry Volunteer Sign-In" />
         </div>
+        <Spacer y={4}/>
         <Signinout/>
       </div>
     </NextUIProvider>

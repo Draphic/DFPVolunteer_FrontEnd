@@ -1,11 +1,37 @@
-'use client'
-import { Button, Input, Spacer, RadioGroup, Radio } from "@nextui-org/react";
+"use client";
+import {
+  Button,
+  Input,
+  Spacer,
+  RadioGroup,
+  Radio,
+  Switch,
+} from "@nextui-org/react";
 import React, { useState } from "react";
 
 export default function Signinout() {
-
   const [email, setEmail] = useState("");
   const [emailFieldState, setEmailFieldState] = useState(false);
+
+  const [showCustomTime, setShowCustomTimeRadio] = useState(false);
+
+  const [showCustomTimeSwitch, setShowCustomTimeSwitch] = useState(false);
+
+  function handleTimeSwitchChange(value) {
+    if (value === true) {
+      setShowCustomTimeSwitch(false);
+    } else {
+      setShowCustomTimeSwitch(true);
+    }
+  }
+
+  function handleTimeRadioChange(value) {
+    if (value === "customTime") {
+      setShowCustomTimeRadio(true);
+    } else {
+      setShowCustomTimeRadio(false);
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -51,27 +77,79 @@ export default function Signinout() {
           errorMessage={emailFieldState && "Please enter a valid email"}
           classNames={{
             label: ["text-white/100", "text-xl"],
-            mainWrapper: ["w-full"]
+            mainWrapper: ["w-full"],
           }}
         />
-        <RadioGroup 
-            label="Time for sign-in/out" 
-            defaultValue="currentTime" 
+        <Spacer y={4} />
+
+        <Switch
+          defaultSelected
+          classNames={{
+            label: ["text-white", "text-xl"],
+          }}
+          onValueChange={handleTimeSwitchChange}
+        >
+          Use the current time
+        </Switch>
+
+        <Spacer y={4} />
+
+        {showCustomTimeSwitch && 
+        <div className="flex items-center flex-row">
+        <Input
+          type="date"
+          label="Date"
+          labelPlacement="outside-left"
+          color="default"
+          size="lg"
+          radius="sm"
+          classNames={{
+            label: ["text-white/100", "text-xl"],
+            mainWrapper: ["w-full"],
+          }}
+        />
+        <Spacer x={2}/>
+        <Input
+          type="time"
+          label="Time"
+          labelPlacement="outside-left"
+          color="default"
+          size="lg"
+          radius="sm"
+          classNames={{
+            label: ["text-white/100", "text-xl"],
+            mainWrapper: ["w-full"],
+          }}
+        />
+        </div>
+        }
+        <Spacer y={4} />
+        <RadioGroup
+          label="Time for sign-in/out"
+          defaultValue="currentTime"
+          classNames={{
+            label: ["text-white", "text-xl"],
+          }}
+          onChange={handleTimeRadioChange}
+        >
+          <Radio
             classNames={{
-                label: ["text-white/100"]
+              label: ["text-white/100"],
             }}
-            >
-          <Radio 
+            value="currentTime"
+          >
+            Use the current time
+          </Radio>
+          <Radio
             classNames={{
-                label: ["text-white/100"]
+              label: ["text-white/100"],
             }}
-            value="currentTime">Use the current time</Radio>
-          <Radio 
-            classNames={{
-                label: ["text-white/100"]
-            }}
-            value="customTime">Enter time myself</Radio>
+            value="customTime"
+          >
+            Enter time myself
+          </Radio>
         </RadioGroup>
+        <Spacer y={4} />
         <div className="w-96 flex flex-row">
           <Button
             className="min-w-48 w-60 flex-auto"
