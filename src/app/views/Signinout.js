@@ -13,6 +13,8 @@ export default function Signinout() {
   const [email, setEmail] = useState("");
   const [emailFieldState, setEmailFieldState] = useState(false);
 
+  const [date, setDate] = useState();
+  const [time, setTime] = useState();
   const [showCustomTime, setShowCustomTimeRadio] = useState(false);
 
   const [showCustomTimeSwitch, setShowCustomTimeSwitch] = useState(false);
@@ -21,12 +23,26 @@ export default function Signinout() {
     if (value === true) {
       setShowCustomTimeSwitch(false);
     } else {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = currentDate.getDate().toString().padStart(2, "0");
+      const hours = currentDate.getHours().toString().padStart(2, "0");
+      const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+      //const seconds = currentDate.getSeconds().toString().padStart(2, "0");
+
+      setDate(`${year}-${month}-${day}`);
+      setTime(`${hours}:${minutes}`);
       setShowCustomTimeSwitch(true);
     }
   }
 
   function handleTimeRadioChange(value) {
     if (value === "customTime") {
+      const currentdate = new Date();
+
+      setDate(currentdate.toDateString());
+      setTime(currentdate.toTimeString());
       setShowCustomTimeRadio(true);
     } else {
       setShowCustomTimeRadio(false);
@@ -94,35 +110,39 @@ export default function Signinout() {
 
         <Spacer y={4} />
 
-        {showCustomTimeSwitch && 
-        <div className="flex items-center flex-row">
-        <Input
-          type="date"
-          label="Date"
-          labelPlacement="outside-left"
-          color="default"
-          size="lg"
-          radius="sm"
-          classNames={{
-            label: ["text-white/100", "text-xl"],
-            mainWrapper: ["w-full"],
-          }}
-        />
-        <Spacer x={2}/>
-        <Input
-          type="time"
-          label="Time"
-          labelPlacement="outside-left"
-          color="default"
-          size="lg"
-          radius="sm"
-          classNames={{
-            label: ["text-white/100", "text-xl"],
-            mainWrapper: ["w-full"],
-          }}
-        />
-        </div>
-        }
+        {showCustomTimeSwitch && (
+          <div className="flex items-center flex-row">
+            <Input
+              type="date"
+              label="Date"
+              labelPlacement="outside-left"
+              color="default"
+              size="lg"
+              radius="sm"
+              classNames={{
+                label: ["text-white/100", "text-xl"],
+                mainWrapper: ["w-full"],
+              }}
+              value={date}
+              onValueChange={setDate}
+            />
+            <Spacer x={2} />
+            <Input
+              type="time"
+              label="Time"
+              labelPlacement="outside-left"
+              color="default"
+              size="lg"
+              radius="sm"
+              classNames={{
+                label: ["text-white/100", "text-xl"],
+                mainWrapper: ["w-full"],
+              }}
+              value={time}
+              onValueChange={setTime}
+            />
+          </div>
+        )}
         <Spacer y={4} />
         <RadioGroup
           label="Time for sign-in/out"
@@ -186,6 +206,10 @@ export default function Signinout() {
           </Button>
         </div>
       </form>
+      <div>
+        <p className="text-large">Date value: {date}</p>
+        <p className="text-large">Time value: {time}</p>
+      </div>
     </div>
   );
 }
