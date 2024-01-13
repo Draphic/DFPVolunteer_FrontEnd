@@ -8,6 +8,7 @@ import {
   Switch,
 } from "@nextui-org/react";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Signinout() {
   const [email, setEmail] = useState("");
@@ -18,6 +19,8 @@ export default function Signinout() {
   const [showCustomTime, setShowCustomTimeRadio] = useState(false);
 
   const [showCustomTimeSwitch, setShowCustomTimeSwitch] = useState(false);
+
+  const router = useRouter();
 
   function handleTimeSwitchChange(value) {
     if (value === true) {
@@ -37,16 +40,20 @@ export default function Signinout() {
     }
   }
 
-  function handleTimeRadioChange(value) {
-    if (value === "customTime") {
-      const currentdate = new Date();
+  // function handleTimeRadioChange(value) {
+  //   if (value === "customTime") {
+  //     const currentdate = new Date();
 
-      setDate(currentdate.toDateString());
-      setTime(currentdate.toTimeString());
-      setShowCustomTimeRadio(true);
-    } else {
-      setShowCustomTimeRadio(false);
-    }
+  //     setDate(currentdate.toDateString());
+  //     setTime(currentdate.toTimeString());
+  //     setShowCustomTimeRadio(true);
+  //   } else {
+  //     setShowCustomTimeRadio(false);
+  //   }
+  // }
+
+  function handleSignUpClick(){
+    router.push('/signup');
   }
 
   async function handleSubmit(event) {
@@ -143,42 +150,16 @@ export default function Signinout() {
             />
           </div>
         )}
-        <Spacer y={4} />
-        <RadioGroup
-          label="Time for sign-in/out"
-          defaultValue="currentTime"
-          classNames={{
-            label: ["text-white", "text-xl"],
-          }}
-          onChange={handleTimeRadioChange}
-        >
-          <Radio
-            classNames={{
-              label: ["text-white/100"],
-            }}
-            value="currentTime"
-          >
-            Use the current time
-          </Radio>
-          <Radio
-            classNames={{
-              label: ["text-white/100"],
-            }}
-            value="customTime"
-          >
-            Enter time myself
-          </Radio>
-        </RadioGroup>
-        <Spacer y={4} />
+
+        {showCustomTimeSwitch && <Spacer y={4} />}
+
         <div className="w-96 flex flex-row">
           <Button
             className="min-w-48 w-60 flex-auto"
             type="submit"
             style={{
-              marginBottom: "5px + 1vh",
               font: "Arial",
               fontSize: "24px",
-              marginTop: "5px",
             }}
             onPress={() => {
               console.log("button press sign in email: ", email);
@@ -192,10 +173,8 @@ export default function Signinout() {
             className="min-w-48 w-60 flex-auto"
             type="submit"
             style={{
-              marginBottom: "5px + 1vh",
               font: "Arial",
               fontSize: "24px",
-              marginTop: "5px",
             }}
             onPress={() => {
               console.log("button press sign out email: ", email);
@@ -206,10 +185,23 @@ export default function Signinout() {
           </Button>
         </div>
       </form>
+      <Spacer y={4} />
       <div>
+        <Button 
+        className="min-w-40 w-40 flex-auto"
+        style={{
+          font: "Arial",
+          fontSize: "24px",
+        }}
+        color="primary"
+        onClick={handleSignUpClick}
+        >
+          Sign-up</Button>
+      </div>
+      {/* <div>
         <p className="text-large">Date value: {date}</p>
         <p className="text-large">Time value: {time}</p>
-      </div>
+      </div> */}
     </div>
   );
 }
